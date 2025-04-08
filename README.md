@@ -1,15 +1,19 @@
-# goit-pythonweb-hw-08
-## How to Use
+# 📞 FastAPI Contacts API
+
+This project is a **RESTful API** built with **FastAPI** for managing contacts.  
+It provides **CRUD operations**, **search**, and **upcoming birthday queries**.
+
+## 🏰️ Setup Instructions
 
 ### **1️⃣ Start PostgreSQL using Docker**
 
 Ensure you have **Docker** installed and run the following command to start a **PostgreSQL container**:
 
 ```sh
-docker run --name contacts-db -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=contacts -p 5432:5432 -d postgres
+docker run --name contacts-db -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=contacts -p 5432:5432 -d postgres
 ```
 
-> **This will:**
+> 📌 **This will:**
 > - Start a **PostgreSQL** container with the database named **contacts**
 > - Expose it on **port 5432**
 
@@ -18,39 +22,21 @@ docker run --name contacts-db -e POSTGRES_USER=user -e POSTGRES_PASSWORD=passwor
 Create a `.env` file in the project root with the following content:
 
 ```ini
-DATABASE_URL = postgresql+asyncpg://user:password@localhost:5432/contacts
+DATABASE_URL = postgresql+asyncpg://admin:admin@localhost:5432/contacts
 ```
 
-### **3️⃣ Install Dependencies**
+### **3️⃣ Apply Migrations with Alembic**
 
-Set up a Python virtual environment and install dependencies using Poetry:
-
-```sh
-python -m venv venv
-source venv/bin/activate
-
-curl -sSL https://install.python-poetry.org | python3 -
-export PATH="$HOME/.local/bin:$PATH"
-
-poetry install
-```
-
-> **This will:**
-> - Create and activate a Python virtual environment
-> - Install dependencies listed in `pyproject.toml`
-
-### **4️⃣ Apply Migrations with Alembic**
-
-Run the following command to apply database migrations:
+Run the following commands to initialize and apply database migrations:
 
 ```sh
 alembic upgrade head
 ```
 
-> **This will:**
+> 📌 **This will:**
 > - Apply all database migrations defined in Alembic.
 
-### **5️⃣ Run the FastAPI Application**
+### **4️⃣ Run the FastAPI Application**
 
 Start the application with **Uvicorn**:
 
@@ -58,14 +44,14 @@ Start the application with **Uvicorn**:
 uvicorn src.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-> **Now, the API will be running on:**
-> - `http://127.0.0.1:8000/`
+> 📌 **Now, the API will be running on**:
+> - 🚀 `http://127.0.0.1:8000/`
 
 ---
 
-## **API Overview**
+## 📌 **API Overview**
 
-### **Endpoints**
+### **🛠️ Endpoints**
 
 | Method     | Endpoint               | Description                                        |
 |------------|------------------------|----------------------------------------------------|
@@ -77,15 +63,15 @@ uvicorn src.main:app --host 127.0.0.1 --port 8000 --reload
 | **GET**    | `/contacts/search/`    | Search contacts by first name, last name, or email |
 | **GET**    | `/contacts/birthdays/` | Get upcoming birthdays in the next N days          |
 
-### **Query Parameters for Searching**
+### **📜 Query Parameters for Searching**
 
 You can filter contacts by:
 
 ```sh
-GET /contacts/?first_name=Serg&last_name=Doe&email=Serg@example.com
+GET /contacts/?first_name=John&last_name=Doe&email=johndoe@example.com
 ```
 
-### **Get Upcoming Birthdays**
+### **🎂 Get Upcoming Birthdays**
 
 Fetch contacts whose birthdays are in the next 7 days:
 
@@ -93,9 +79,12 @@ Fetch contacts whose birthdays are in the next 7 days:
 GET /contacts/birthdays/?days=7
 ```
 
-### **API Documentation**
+### **🛠 API Documentation**
 
 - **Swagger UI:** `http://127.0.0.1:8000/docs`
 - **ReDoc UI:** `http://127.0.0.1:8000/redoc`
 
 ---
+
+
+

@@ -1,6 +1,6 @@
 [project]
 name = "goit-pythonweb-hw-08"
-version = "0.0.1"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "serhii.zghama",email = "zmrser@gmail.com"}
@@ -16,12 +16,13 @@ dependencies = [
     "asyncpg (>=0.30.0,<0.31.0)",
     "black (>=25.1.0,<26.0.0)",
     "alembic (>=1.15.1,<2.0.0)",
-    "psycopg2 (>=2.9.10,<3.0.0)"
+    "psycopg2 (>=2.9.10,<3.0.0)",
+    "python-jose[cryptography] (>=3.4.0,<4.0.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "libgravatar (>=1.0.4,<2.0.0)",
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-[tool.poetry]
-package-mode = false

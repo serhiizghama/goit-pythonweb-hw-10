@@ -16,8 +16,7 @@ class ContactRepository:
         self.db = db
 
     async def create_contact(self, contact_data: ContactCreate) -> Contact:
-        existing_contact_stmt = select(
-            Contact).filter_by(email=contact_data.email)
+        existing_contact_stmt = select(Contact).filter_by(email=contact_data.email)
         existing_contact_result = await self.db.execute(existing_contact_stmt)
         existing_contact = existing_contact_result.scalar_one_or_none()
 
@@ -102,8 +101,7 @@ class ContactRepository:
             return contact
         except IntegrityError:
             await self.db.rollback()
-            raise HTTPException(
-                status_code=400, detail="Failed to update contact.")
+            raise HTTPException(status_code=400, detail="Failed to update contact.")
 
     async def delete_contact(self, contact_id: int) -> Optional[Contact]:
         contact = await self.get_contact_by_id(contact_id)
@@ -116,8 +114,7 @@ class ContactRepository:
             return contact
         except IntegrityError:
             await self.db.rollback()
-            raise HTTPException(
-                status_code=400, detail="Failed to delete contact.")
+            raise HTTPException(status_code=400, detail="Failed to delete contact.")
 
     async def search_contacts(self, query: str) -> List[Contact]:
         stmt = select(Contact).filter(

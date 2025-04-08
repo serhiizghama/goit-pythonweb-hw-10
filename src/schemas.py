@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional, List
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class ContactBase(BaseModel):
@@ -30,3 +30,23 @@ class ContactListResponse(BaseModel):
     skip: int
     limit: int
     contacts: List[ContactResponse]
+
+
+class User(BaseModel):
+    id: int
+    username: str
+    email: str
+    avatar: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

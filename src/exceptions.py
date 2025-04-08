@@ -7,34 +7,33 @@ from pydantic import ValidationError
 logger = logging.getLogger(__name__)
 
 
-async def integrity_exception_handler(request: Request, exc: IntegrityError):
-    logger.error(f"Database Integrity Error: {str(exc)}")
-    return JSONResponse(
-        status_code=400,
-        content={"detail": "Record already exists with provided unique value."},
-    )
-
-
-async def general_exception_handler(request: Request, exc: Exception):
-    logger.error(f"General Exception Occurred: {str(exc)}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error. Please contact support."},
-    )
-
-
 async def validation_exception_handler(request: Request, exc: ValidationError):
-    logger.error(f"Validation Failed: {exc.errors()}")
+    logger.error(f"Validation Error: {exc.errors()}")
     return JSONResponse(
-        status_code=400,
+        status_code=400,  # Convert 422 -> 400 Bad Request for consistency
         content={"detail": exc.errors()},
     )
 
 
+async def integrity_exception_handler(request: Request, exc: IntegrityError):
+    logger.error(f"Integrity Error: {str(exc)}")
+    return JSONResponse(
+        status_code=400,
+        content={"detail": "A record with this unique value already exists."},
+    )
+
+
 async def not_found_exception_handler(request: Request, exc: HTTPException):
-    logger.warning(
-        f"Resource Not Found: URL={request.url} - Detail={exc.detail}")
+    logger.warning(f"Not Found: {request.url} - {exc.detail}")
     return JSONResponse(
         status_code=exc.status_code,
-        content={"detail": exc.detail or "The requested resource does not exist."},
+        content={"detail": exc.detail or "Resource not found"},
+    )
+
+
+async def general_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled Exception: {str(exc)}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "An internal server error occurred."},
     )
