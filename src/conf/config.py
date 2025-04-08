@@ -9,6 +9,7 @@ class Config:
     JWT_SECRET = os.getenv("JWT_SECRET")
     JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
     JWT_EXPIRATION_TIME = os.getenv("JWT_EXPIRATION_TIME")
+    CORS_ORIGINS = os.getenv("CORS_ORIGINS").split(",")
 
 
 config = Config()
