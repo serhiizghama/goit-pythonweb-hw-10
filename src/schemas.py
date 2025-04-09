@@ -50,3 +50,7 @@ class UserCreate(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class RequestEmail(BaseModel):
+    email: EmailStr

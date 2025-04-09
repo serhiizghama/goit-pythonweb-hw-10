@@ -1,90 +1,107 @@
 # 📞 FastAPI Contacts API
 
-This project is a **RESTful API** built with **FastAPI** for managing contacts.  
-It provides **CRUD operations**, **search**, and **upcoming birthday queries**.
+A complete **Contacts Management RESTful API** built with **FastAPI**, supporting:
 
-## 🏰️ Setup Instructions
+- 🔐 User registration, login, JWT authentication
+- ✅ Email confirmation with token verification
+- 📇 Contact CRUD operations
+- 🔍 Contact search and upcoming birthday queries
+- 📤 Avatar uploads to Cloudinary
+- 🐳 Dockerized setup
 
-### **1️⃣ Start PostgreSQL using Docker**
+---
 
-Ensure you have **Docker** installed and run the following command to start a **PostgreSQL container**:
 
-```sh
-docker run --name contacts-db -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=contacts -p 5432:5432 -d postgres
-```
+### **Set up Environment Variables**
 
-> 📌 **This will:**
-> - Start a **PostgreSQL** container with the database named **contacts**
-> - Expose it on **port 5432**
-
-### **2️⃣ Set up Environment Variables**
-
-Create a `.env` file in the project root with the following content:
+Create a `.env`  in the root of the project:
 
 ```ini
-DATABASE_URL = postgresql+asyncpg://admin:admin@localhost:5432/contacts
+DATABASE_URL=postgresql+asyncpg://admin:admin@db:5432/contacts
+JWT_SECRET=your_jwt_secret
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_TIME=3600
+CORS_ORIGINS=http://localhost,http://127.0.0.1:8000
+
+MAIL_USERNAME=your_email@example.com
+MAIL_PASSWORD=your_email_password
+MAIL_FROM=your_email@example.com
+MAIL_PORT=587
+MAIL_SERVER=smtp.example.com
+MAIL_FROM_NAME=FastAPI Contacts
+
+CLOUDINARY_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-### **3️⃣ Apply Migrations with Alembic**
+### 🐳 **Build & Run using Docker**
 
-Run the following commands to initialize and apply database migrations:
-
-```sh
-alembic upgrade head
+```ini
+docker-compose up --build
 ```
 
-> 📌 **This will:**
-> - Apply all database migrations defined in Alembic.
+💡 On container startup, the API will:
+- Apply Alembic migrations
+- Start on http://localhost:8000
 
-### **4️⃣ Run the FastAPI Application**
+🧪 Poetry Development Mode
+For local development outside Docker:
+```bash
+poetry install
 
-Start the application with **Uvicorn**:
+poetry run alembic upgrade head
 
-```sh
-uvicorn src.main:app --host 127.0.0.1 --port 8000 --reload
+poetry run uvicorn src.main:app --reload
 ```
 
-> 📌 **Now, the API will be running on**:
-> - 🚀 `http://127.0.0.1:8000/`
 
----
+### 🚀 **API Access**
+🔑 Auth
 
-## 📌 **API Overview**
+|Method|Endpoint|Description|
+|---|---|---|
+|POST|/auth/register|Register user|
+|POST|/auth/login|Login and get JWT|
+|GET|/auth/confirm_email/{token}|Email verification|
+|POST|/auth/request_email|Re-send confirmation email|
 
-### **🛠️ Endpoints**
+🙋‍♂️ Users
 
-| Method     | Endpoint               | Description                                        |
-|------------|------------------------|----------------------------------------------------|
-| **POST**   | `/contacts/`           | Create a new contact                               |
-| **GET**    | `/contacts/`           | Get all contacts (with pagination & filtering)     |
-| **GET**    | `/contacts/{id}`       | Get a specific contact by ID                       |
-| **PATCH**  | `/contacts/{id}`       | Update an existing contact                         |
-| **DELETE** | `/contacts/{id}`       | Delete a contact                                   |
-| **GET**    | `/contacts/search/`    | Search contacts by first name, last name, or email |
-| **GET**    | `/contacts/birthdays/` | Get upcoming birthdays in the next N days          |
+|Method|Endpoint|Description|
+|---|---|---|
+|GET|/users/me|Get current user info|
+|PATCH|/users/avatar|Upload avatar (Cloudinary)|
 
-### **📜 Query Parameters for Searching**
+📇 Contacts
 
-You can filter contacts by:
+|Method|Endpoint|Description|
+|---|---|---|
+|POST|/contacts/|Create a new contact|
+|GET|/contacts/|List contacts with filtering|
+|GET|/contacts/{id}|Get a specific contact|
+|PATCH|/contacts/{id}|Update a contact|
+|DELETE|/contacts/{id}|Delete a contact|
+|GET|/contacts/search/|Search contacts by name/email|
+|GET|/contacts/birthdays/|Upcoming birthdays within a given number of days|
 
-```sh
-GET /contacts/?first_name=John&last_name=Doe&email=johndoe@example.com
+### 📜 **API Docs**
+- Swagger UI: http://localhost:8000/docs
+- ReDoc UI: http://localhost:8000/redoc
+
+🧪 Health Check
+```bash
+GET /healthcheck
 ```
 
-### **🎂 Get Upcoming Birthdays**
-
-Fetch contacts whose birthdays are in the next 7 days:
-
-```sh
-GET /contacts/birthdays/?days=7
-```
-
-### **🛠 API Documentation**
-
-- **Swagger UI:** `http://127.0.0.1:8000/docs`
-- **ReDoc UI:** `http://127.0.0.1:8000/redoc`
-
----
-
+✨ Technologies Used
+- FastAPI
+- PostgreSQL
+- SQLAlchemy (Async)
+- Alembic
+- JWT Auth
+- Cloudinary (avatar uploads)
+- FastMail (email verification)
+- Docker + Docker Compose
 
 

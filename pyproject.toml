@@ -1,5 +1,5 @@
 [project]
-name = "goit-pythonweb-hw-08"
+name = "goit-pythonweb-hw-10"
 version = "0.1.0"
 description = ""
 authors = [
@@ -23,6 +23,8 @@ dependencies = [
     "python-multipart (>=0.0.20,<0.0.21)",
     "bcrypt (<4.0)",
     "slowapi (>=0.1.9,<0.2.0)",
+    "fastapi-mail (>=1.4.2,<2.0.0)",
+    "cloudinary (>=1.43.0,<2.0.0)",
 ]
 
 

@@ -65,3 +65,27 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+def create_email_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.now(UTC) + timedelta(days=1)
+    to_encode.update({"iat": datetime.now(UTC), "exp": expire})
+    token = jwt.encode(
+        to_encode, app_config.JWT_SECRET, algorithm=app_config.JWT_ALGORITHM
+    )
+    return token
+
+
+async def get_email_from_token(token: str):
+    try:
+        payload = jwt.decode(
+            token, app_config.JWT_SECRET, algorithms=[app_config.JWT_ALGORITHM]
+        )
+        email = payload["sub"]
+        return email
+    except JWTError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid token",
+        )
